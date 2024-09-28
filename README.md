@@ -48,6 +48,7 @@ JVM 是 Java 程序运行的核心，保证了 Java 的跨平台性和安全性�
 默认值：
 ![img.png](images/img3.png)
 
+---
 
 3. String
 
@@ -136,6 +137,7 @@ System.out.println("19999".compareTo("2"));
 
 由于 String 对象是不可变的，因此每次对字符串进行修改都会创建一个新的 String 对象。如果需要频繁修改字符串，可以使用 StringBuilder 或 StringBuffer 类。StringBuilder 和 StringBuffer 类提供了许多方法，用于修改字符串，例如 append () 方法用于在字符串末尾添加字符或字符串，insert () 方法用于在字符串中插入字符或字符串，等等。StringBuilder 和 StringBuffer 类的区别在于，StringBuilder 类是线程不安全的，而 StringBuffer 类是线程安全的。
 
+---
 
 4. Java StringBuilder
 
@@ -246,6 +248,8 @@ replace(int start, int end, String str)	|用指定字符串替换此序列的子
 delete(int start, int end)	|移除此序列的子字符串中的字符
 reverse()	|将此字符序列用其反转形式取代
 
+---
+
 5. Java Scanner
 
 Scanner 类的使用非常简单直观，首先需要创建一个 Scanner 对象，然后使用该对象的 next ()、nextInt ()、nextDouble () 等方法来读取用户输入的数据.
@@ -274,6 +278,8 @@ public class ScannerDemo {
     }
 }
 ```
+---
+
 
 6. JAVA 异常
 
@@ -345,8 +351,10 @@ try (FileReader fileReader = new FileReader(file); BufferedReader bufferedReader
     System.out.println("读取文件失败");
 }
 ```
+
 （6）自定义异常
 
+---
 
 7. Java 枚举
    
@@ -360,6 +368,8 @@ enum EnumName {
   ...
 }
 ```
+
+---
 
 8. Java Array
 
@@ -474,5 +484,364 @@ for (int i = 0; i < entity.length; i++) {
 - 但是数组也存在一些不足的地方。比如在数组的两个数据间插入数据也是很麻烦的，还有我们在声明数组的时候，必须同时指明数组的长度，数组的长度过长，会造成内存浪费，数组和长度过短，会造成数据溢出的错误。这样如果在声明数组时我们并不清楚数组的长度，就变的很麻烦了。
 - ArrayList**它的大小是按照其中存储的数据来动态扩充与收缩的**。 所以，我们在声明ArrayList对象时并不需要指定它的长度。ArrayList继承了List接口，所以它可以很方便的进行数据的添加，插入和移除.
 
+---
 
 #### Java面向对象 
+
+##### 继承
+继承通常用来表示类之间的 is-a关系，比如猫是一种哺乳动物；汽车是一种机器，香樟树是一种植物等，继承符合人类的认知思维，比较好理解。
+
+继承有单继承和多继承之分。Java 中的继承是**单继承**。继承的意义一是可以**代码复用**，相同的属性和方法可以抽取到父类之中，在子类中直接调用，避免重复的代码。
+
+Java 中的继承使用关键字 `extends` 表示。
+
+在 Java 中，子类会继承父类除了 `private` 权限的所有信息，比如属性、方法、接口等。子类可以调用父类的非 private 属性和方法，使用 `super` 关键词可以调用父类的属性或信息，使用 `this` 关键字调用当前子类的属性或信息。
+
+**方法重写**：在继承时，子类可以重写父类的方法实现。
+
+在 Java 中继承只能是**单继承**，如果有时我们需要多继承，**可以通过接口的多继承特性来实现类的多继承**。
+```java
+interface Three extends One, Two
+
+class Teach implements Three
+```
+
+---
+
+##### 接口
+Java 中的接口也是表达了 `IS-A` 关系，但是接口更多的是一种行为抽象，它是对某一类的多种行为的抽象。所有实现了某个接口的类，都需要实现接口规范的行为。
+
+如果用生活中的事物来举例的话，如果要为人定义一个接口，它通常需要规定如下的行为。
+
+>人类：每个人都要吃饭，睡觉。
+
+根据这个人类接口的定义，我们知道人类必须包含吃饭和睡觉行为。不管你是南方人、北方人、外国人，都需要人类这个接口中所规定的吃饭和睡觉行为。虽然可能具体的行为内容不同，但是这两个行为是必须的。
+
+Java 接口定义通常仅包含被 `public` 修饰的仅有方法定义的抽象方法，以及被 `public static final` 修饰的常量，同时使用 `interface` 关键词来代替 `class` ，接口不能被实例化。
+
+从 Java 8 开始，接口可以有默认方法和静态方法了，从 Java 9 开始，可以添加静态私有方法。
+```java
+interface MyInterface {
+    String param = null; // 默认被 public static final 修饰
+    void method1(); // 默认被 public abstract 修饰
+    void method2(); // 默认被 public abstract 修饰
+    // 默认方法
+    default void defaultMethod() {
+        System.out.println("default method");
+    }
+	  // 私有方法
+    private void privateMethod() {
+        System.out.println("private method");
+    }
+  	// 静态方法
+    static void staticMethod() {
+        System.out.println("static method");
+    }
+    // 私有静态方法
+    private static void privateStaticMethod() {
+        System.out.println("private static method");
+    }
+}
+```
+
+Java 中接口的特点如下：
+
+- 通常接口中只包含抽象方法的定义（Java 8 可以有默认方法和静态方法，Java 9 可以有私有静态方法）。
+- 接口的实现类必须实现接口中所有的抽象方法。
+- 接口的抽象方法默认都是被 `public abstract` 修饰，子类必须实现。
+- 接口的属性都是被 `public static final` 修饰。
+- 接口不能被实例化。
+- 接口可以被多个实现类实现，从而实现多态性。
+- 接口可以被其他接口继承，从而实现接口的扩展性。
+- 使用 `implements` 关键词实现接口功能.
+- 一个类可以实现多个接口.
+- 接口使用 `extends` 这种简单的方式可以对接口进行继承.
+- 空接口：这样的接口也有它的作用，可以理解为对某一些类打了个标记，后续的某些操作可以以判断是否实现了某个接口为依据。比如常见的两个空接口 `Serializable` 和 `Cloneable`.(`Serializable`：用于标记类可以被序列化。`Cloneable`：用于标记类可以被克隆。)
+- 一个类可以实现**多个**接口。 接口可以**继承**接口。
+
+接口和抽象类的区别:
+
+区别	| 接口                   |	抽象类
+--|----------------------|--
+继承	| 使用 implements 关键字实现	 |使用 extends 关键字实现
+定义	| 通常定义了一组规范，规范要具体的行为	  |定义了一些抽象方法，但也可以包含具体方法
+方法	|通常方法都是抽象的，不能有具体实现，（静态方法、默认方法比较特殊）。|	可以定义抽象方法，也可以包含具体方法
+实现	|接口不能实例化，接口可以被类实现	|不能被实例化，只能被类继承
+多继承|	类可以实现多个接口	|类只能继承一个抽象类
+特点	|用于解耦程序，提高代码的复用性和灵活性	|用于提供一些通用的行为和属性，可以被具体类继承和扩展
+
+接口和类的区别：
+
+区别	|接口	|类
+--|--|--
+定义	|通常只定义了一些行为规范	|定义了一些属性和方法，可以包含具体行为实现
+多继承|	可以实现多个接口	|只能继承一个类
+实例化|	不能被实例化，只能被类实现	|可以被实例化，创建多个对象
+
+---
+
+##### 抽象类
+在 Java 中，如果一个类里需要定义一个没有具体实现的方法，它的实现需要它的子类中实现，那么可以使用 `abstract` 定义成一个抽象方法。
+
+如果一个类里包含至少一个抽象方法，那么类只能使用 `abstract` 关键词定义成抽象类。
+
+抽象类中还可以包含其他的**非抽象方法**以及字段。抽象类的子类必须实现其所有的抽象方法，否则子类也必须声明为抽象类。但是抽象类中也可以不定义任何抽象方法。
+
+抽象类可以被继承，一个类如果继承了抽象类，则必须实现抽象类中的抽象方法。
+
+抽象类不能实例化，不然编译不通过。
+
+抽象类的子类作为普通类可以实例化，抽象类可以指向子类。
+
+Java 抽象类有以下特点：
+
+- 一个类包含抽象方法则必须定义成抽象类，但是抽象类可以不包含任何抽象方法。
+- 抽象类可以包含非抽象方法、属性。 
+- 子类继承抽象类必须实现抽象类中的所有抽象方法，否则子类也必须声明为抽象类。 
+- 抽象类不能直接实例化：抽象类只能被子类实现实例化。 
+- 抽象类可以向上转型：抽象类的引用可以指向子类对象，实现了抽象类的多态性。 
+- 抽象类的主要作用是为其子类提供通用的属性和方法，这些属性和方法由其子类实现，从而实现了代码复用和逻辑分离。
+
+---
+
+##### JAVA 多态
+Java 的多态是面向对象编程的重要特性，它**允许同一个类的不同对象实例对同一个方法做出不同的响应**。简单说，多态就是同一种类型的对象，在不同的情况下会表现出不同的行为。
+
+![img.png](images/img8.png)
+
+
+在 Java 中，多态可以由**继承和接口**两种机制实现，通过实现、重写、指定的方法，Java 可以让程序在运行时动态地选择调用哪个方法，从而实现多态。这种特性可以使代码更加灵活，减少代码冗余，提高代码的可读性和可维护性。
+
+>接口的引用可以指向任何实现了该接口的类的实例，这就是多态性的一部分，允许你用一个接口引用来操作多种不同的实现。
+
+
+多态的一大特点就是**运行时才决定调用的是哪个方法**.
+
+Java 中的多态优点如下：
+
+- 提高代码的可扩展性和可维护性：多态可以让程序员在不修改已有代码的情况下扩展系统的功能，从而降低了系统的维护成本。 
+- 简化代码的逻辑：多态可以让程序员只需要关注对象的行为，而不必关心具体的对象类型。 
+- 提高代码的重用性：通过继承和接口的方式，可以将代码的相同部分抽取出来，减少了代码冗余，提高了代码的重用性。 
+- 提高代码的灵活性：多态可以让程序员在运行时动态地选择具体的实现方式，从而提高了代码的灵活性和可配置性。 
+- 提高代码的可读性和可理解性：多态可以让代码更加直观和易于理解，提高了代码的可读性和可理解性。
+
+---
+
+##### 抽象类和接口的区别
+
+在 Java 8 之后，我们发现可以在接口中添加默认方法，这让接口和抽象类的区别进一步模糊了.
+
+比如包含默认方法的接口：
+```java
+public interface InterfacePerson {
+    default void sayHello(){
+        System.out.println("say hello");
+    }
+     void sleep();
+}
+```
+
+包含抽象方法的抽象类：
+```java
+public abstract class AbsPerson {
+
+    public void sayHello() {
+        System.out.println("say hello");
+    }
+
+    public abstract void sleep();
+}
+```
+
+特性| 	接口      |	抽象类
+--|----------|--
+组合	| 可以继承多个接口 |	只能继承一个抽象类
+构造函数| 	不能有构造函数 |	可以有构造函数
+权限控制	|默认 public	|可以为 protected
+属性	|不能包含非静态属性	|可以包含任意属性
+方法	|只能定义抽象方法和默认方法	|可以随意定义方法和抽象方法
+目的	|接口表示一种规范，一组行为的抽象|	通常是为了代码复用
+
+可见，接口和抽象类最大的不同是，抽象类仍然是一个类，它具有类的很多特性，如构造函数，属性，单继承，代码复用等。
+
+而接口更加符合行为的抽象这个限制。它的属性都是被 `public static final` 修饰，它除了默认方法外所有的抽象方法都要被子类实现。
+
+---
+
+##### JAVA集合
+Java 集合框架是 Java 语言中提供的一个重要工具库，可以用于存储和处理数据集合。集合框架提供了一组通用接口和类，用于表示不同特性的集合，如列表 `List`、集合、队列 `Queue` 和映射 `Map` 等。 集合框架由接口、实现类及其相应的算法和数据结构进行实现，是 JDK 中非常重要且常用的类库，每一个 Java 程序员都应该充分掌握。
+
+![img.png](images/img9.png)
+
+
+Java 中的集合框架主要是 `Collection` 和 `Map`，两者是根据存放的内容形式不同来区分的，`Collection` 主要存储单元素序列，而 `Map` 主要用来存储键值对关系。
+
+`Collection` 接口是所有单元素序列集合的上层接口，定义了所有单元素序列集合共有的基本操作，如添加、删除和遍历等。其中 `List` 接口是有序集合，允许存储重复元素，`Set` 接口是无序集合，不允许重复元素，`Queue` 接口具有队列常见操作方法。
+
+Collection 接口常用方法说明：
+
+方法名	|描述
+--|--
+add(E e)	|将元素添加到集合中
+remove(Object o)|	删除集合中指定元素
+clear()	|删除集合中所有元素
+size()	|返回集合中元素的数量
+isEmpty()	|判断集合是否为空
+contains(Object o)|	判断集合是否包含指定元素
+toArray()	|将集合转化为数组
+iterator()	|返回集合的迭代器
+addAll(Collection<? extends E> c)	|将另一个集合中的元素添加到当前集合中
+removeAll(Collection<?> c)	|删除当前集合中与另一个集合中相同的元素
+retainAll(Collection<?> c)	|保留当前集合中与另一个集合中相同的元素，删除其他元素
+containsAll(Collection<?> c)|	判断当前集合是否包含另一个集合中的所有元素
+
+比如 `ArrayList` 和 `LinkedList` 都实现了 `List` 接口，说明它们可以存储单元素序列，只是两者分别基于数组及链表实现；`HashSet` 和 `LinkedHashSet` 实现了 `Set` 接口，分别基于散列表和链表实现。`TreeSet` 实现了 `SortedSet` 接口，基于红黑树实现.
+
+---
+
+`Map` 是键值对集合，它允许重复值但不允许重复键。在 `Map` 中，可以使用键来查找值。`Map` 把键值关系进行绑定，因此有时候也被成为字典。Map 集合是非常强大且常用的编程工具，在 Java 中使用最多的是 `HashMap`。
+
+
+Map 常用方法说明：
+
+方法名|	描述
+--|---
+clear()	|删除 Map 中的所有映射关系
+containsKey(Object key)	|判断 Map 中是否包含指定的 key
+containsValue(Object value)|	判断 Map 中是否包含指定的 value
+get(Object key)	|返回与指定 key 关联的 value，如果 Map 不包含该 key，则返回 null
+isEmpty()	|判断 Map 是否为空
+put(K key, V value)	|在 Map 中添加一个映射关系，如果 Map 中已经存在该 key，则替换原有的 value
+putAll(Map<? extends K, ? extends V> m)|	将指定 Map 中的所有映射复制到当前 Map 中
+remove(Object key)	|从 Map 中删除指定的 key 及其对应的 value
+size()	|返回 Map 中的映射数量
+entrySet()|	返回 Map 中包含的映射关系的 Set 视图
+keySet()	|返回 Map 中包含的所有 key 的 Set 视图
+values()	|返回 Map 中包含的所有 value 的 Collection 视图
+void forEach(BiConsumer<? super K,? super V> action)|	遍历 Map 中的每个元素，并执行给定的操作
+V getOrDefault(Object key, V defaultValue)	|如果 Map 中包含指定的 key，则返回其对应的 value，否则返回 defaultValue
+V putIfAbsent(K key, V value)	|如果该 key 在 Map 中不存在，则将 key 和 value 关联起来，并返回 null，否则返回已有的 value
+boolean remove(Object key, Object value)|	如果指定的 key 在 Map 中存在，并且其对应的 value 与给定的 value 相同，则删除该映射关系
+V replace(K key, V value)	|如果指定的 key 在 Map 中存在，则将其对应的 value 替换为给定的 value，并返回原有的 value，否则返回 null
+boolean replace(K key, V oldValue, V newValue)|	如果指定的 key 在 Map 中存在，并且其对应的 value 为 oldValue，则将其替换为 newValue，并返回 true，否则返回 false
+void replaceAll(BiFunction<? super K, ? super V, ? extends V> function)|	遍历 Map 中的每个元素，并将其 value 替换为给定的函数返回的新 value
+
+需要注意的是，上述方法中的 `BiConsumer`、`BiFunction` 是 Java 8 中新增的函数式接口。
+
+从 Java 10 开始，增加了 var 关键词定义类型的方式，Java 将会自动进行类型推断，这样可以减少代码量，但是也会降低代码的可读性。
+```java
+var hashMap = new HashMap<String, String>();
+hashMap.put("A","B");
+var string = "hello java 10";
+var stream = Stream.of(1, 2, 3, 4);
+var list = new ArrayList<String>();
+```
+
+##### List
+List 的大小是可变的，我们可以根据需要动态地添加、删除元素。当容量不够时，会自动扩容。
+![img.png](images/img10.png)
+
+- 获取：`get`
+- 更新：`set`
+- 删除： `remove`
+- 是否存在某元素：`contains`
+- 大小：`size`
+- 排序：`Collections.sort(list)`
+- List转数组：`List.toArray(T[] a)` 方法用于将列表转换为一个数组，但不能直接将 int 类型的数组作为参数，因为 int **不是对象类型**。相反，你应该使用 `Integer` 类型的数组。
+```java
+public class Main {
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        Integer[] s = list.toArray(new Integer[0]);
+        System.out.println(s[0]);
+
+        List<String> list2 = new LinkedList<String>();
+        list2.add("1");
+        list2.add("2");
+        list2.add("3");
+        list2.add("4");
+        String[] array = list2.toArray(new String[0]);
+        System.out.println(array[0]);
+    }
+}
+
+```
+- 数组转 List：(Arrays.asList()期望的是一个对象类型的数组)基本数据类型会报错。
+正确：
+```java
+String[] stringArray = {"Hello", "World", "Kimi"};
+
+// 使用Arrays.asList()直接转换
+List<String> stringList = Arrays.asList(stringArray);
+
+System.out.println(stringList);
+```
+错误：
+```java
+int[] intArray = {1, 2, 3, 4, 5};
+List<Integer> intList = Arrays.asList(intArray);
+```
+
+##### ArrayList、LinkedList、Vector
+ArrayList
+- 特点：ArrayList 是基于数组实现的 List。它具有随机访问的特点，可以通过索引快速访问元素。 
+- 适用场景：当需要快速访问元素，并且不需要频繁地进行插入和删除操作时，可以选择 ArrayList。 
+- 性能： ArrayList 在随机访问元素时性能较好，但在插入和删除元素时性能较差，需要进行元素的移动。 
+- 根据开发经验，大多数时候都应该选择使用 ArrayList。
+
+LinkedList
+- 特点： LinkedList 是基于链表实现的 List。它具有快速的插入和删除元素的特点。 
+- 适用场景： 当需要频繁地进行插入和删除操作时，可以选择 LinkedList。 
+- 性能： LinkedList 在插入和删除元素时性能较好，但在随机访问元素时性能较差，需要遍历链表。 
+- 关于 ArrayList 和 LinkedList 的实现原理，可以查看：Java ArrayList 和 LinkedList 实现原理
+
+Vector
+- 特点： Vector 是线程安全的 List，可以在多线程环境下使用。 
+- 适用场景： 当需要在多线环境应用场景时，可以选择使用 Vector。 
+- 性能：Vector 在性能上相对较差，因为它实现了线程安全，需要进行同步操作。在单线程环境下，通常使用 ArrayList 来替代 Vector。
+
+##### CopyOnWriteArrayList
+
+`CopyOnWriteArrayList` 也是 Java 中的一个线程安全的 List 集合类。
+
+特点：写时复制，`CopyOnWriteArrayList` 的特点是在写入数据时，会创建一个新的数组来存储数据，而原来的数组保持不变。这意味着写操作不会影响到读操作，读操作可以在不加锁的情况下进行。因此，`CopyOnWriteArrayList` 非常适用于读多写少的场景。
+
+适用场景：线程安全，`CopyOnWriteArrayList` 的写操作是通过加锁来实现的，所以它是线程安全的。对于读操作，由于不涉及数据的修改，所以可以在多个线程之间并发进行，提高了读取的效率。
+
+性能：`CopyOnWriteArrayList` 非常适用于读多写少的场景，例如缓存、观察者列表等。它的读操作是无锁的，因此非常适合在读多写少的场景中使用。但是需要注意的是，由于每次写操作都会创建一个新的数组，所以会消耗额外的内存，如果内存资源有限，可能不适合使用。
+
+当多个线程同时操作一个 `List` 时，可能会出现线程安全问题。如果需要在多线程环境下使用 `List`，可以考虑使用线程安全的实现类，如 `Vector` 或 `CopyOnWriteArrayList` 或使用 `Collections` 类中提供的 `synchronizedList()` 方法创建线程安全的 `List`。
+
+遍历List报错ConcurrentModificationException，因为线程安全问题，这是不被允许的。
+```java
+List<String> list = new ArrayList();
+list.add("a");
+list.add("b");
+for (String string : list) {
+    if (string.equals("b")) {
+        list.add("c");
+    }
+}
+```
+在遍历时删除某个元素，可以使用迭代器:
+```java
+List<String> arrayList = new ArrayList();
+arrayList.add("a");
+arrayList.add("b");
+
+Iterator<String> iterator = arrayList.iterator();
+while (iterator.hasNext()) {
+    String next = iterator.next();
+    if ("a".equals(next)) {
+        iterator.remove();
+    }
+}
+System.out.println(arrayList); // output: [b]
+```
+元素的顺序和索引 List 中的元素是有序的，并且每个元素都有一个对应的索引。在操作 List 时，需要注意元素的顺序和索引的关系。插入、删除元素会导致索引的变化，需要相应地调整索引的使用。
+
+List 允许存储重复的元素，而 Set 不允许存储重复的元素。List 是有序的，可以通过索引访问元素，而 Set 是无序的，不能通过索引访问元素。
