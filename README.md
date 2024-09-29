@@ -845,3 +845,105 @@ System.out.println(arrayList); // output: [b]
 元素的顺序和索引 List 中的元素是有序的，并且每个元素都有一个对应的索引。在操作 List 时，需要注意元素的顺序和索引的关系。插入、删除元素会导致索引的变化，需要相应地调整索引的使用。
 
 List 允许存储重复的元素，而 Set 不允许存储重复的元素。List 是有序的，可以通过索引访问元素，而 Set 是无序的，不能通过索引访问元素。
+
+
+##### 文件操作
+在 Java 中有多种创建写入数据到文件的方式。
+
+- Files.write 创建写入数据到文件（JDK 7）
+- Files.writeString 创建写入数据到文件（JDK11）
+- BufferedWriter 创建写入数据到文件
+
+```java
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        // JDK-17
+        // 写文件=》每次都是覆盖之前的内容
+        String content = "写入文件内容===test";
+        Files.write(Paths.get("text.txt"), content.getBytes(StandardCharsets.UTF_8));
+
+        // 写文件=》在之前文件上追加内容=》StandardOpenOption.APPEND
+        Files.write(Paths.get("text.txt"), content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        Files.write(Paths.get("text.txt"), content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+        //Files.write 也可以直接写入 List 内容到文件，每个元素一行。
+
+        // JDK-11:Files.writeString=>可以直接把字符串写入文件而不用 getBytes
+        Files.writeString(Paths.get("text2.txt"), content,  StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        
+
+    }
+}
+```
+
+在 Java 中有多种读取文件内容的方式。
+
+- Files.readAllLines 读取文件到 List（Java 8）
+- Files.readAllBytes 读取文件到 byte\[] 数组（Java 8）
+- Files.lines 读取文件内容到 Stream 流 （Java 8 ）
+- Files.readString 读取文件到字符串（Java 11）
+- BufferedInputStream 按字节读取文件（Java 1.0 +）
+- Scanner 读取文件（Java 1.5+，很少用）
+
+文件读取操作需要注意关闭输入流，自 Java 7 开始，可以通过 `try-with-resource` 方式自动关闭流:
+
+```java
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Path path = Paths.get("text.txt");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        for (String line : lines) {
+            System.out.println(line);
+        }
+
+    }
+}
+```
+
+删除文件:
+```java
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Files.delete(Paths.get("text.txt"));
+        Files.delete(Paths.get("text2.txt"));
+
+        // 有返回值的删除=》避免报错
+        boolean exists = Files.deleteIfExists(Paths.get("test3.txt"));
+        if (!exists) {
+            System.out.println("File does not exist");
+        }else {
+            System.out.println("File exists");
+        }
+
+
+    }
+}
+```
+
+##### 网络编程
+**阻塞IO** 和**非阻塞IO** 这两个概念是程序级别的。主要描述的是程序请求操作系统IO操作后，如果**IO资源没有准备好**，那么程序该如何处理的问题：前者等待；后者继续执行（但是使用线程一直轮询，直到有IO资源准备好了）。
+
+**同步IO** 和 **异步IO**，这两个概念是操作系统级别的。主要描述的是操作系统在收到程序请求IO操作后，如果IO资源没有准备好，该如何响应程序的问题：前者不响应，直到IO资源准备好以后；后者返回一个标记（好让程序和自己知道以后的数据往哪里通知），当IO资源准备好以后，再用事件机制返回给程序。
+
+**同步阻塞模式（Blocking IO）**
+
+同步阻塞IO模型是最简单的IO模型，用户线程在内核进行IO操作时如果数据没有准备号会被阻塞。
+```java
+{
+    // 阻塞，直到有数据
+	read(socket, buffer);
+	process(buffer);
+}
+```
+BIO通信方式的特点：
+
+- 一个线程负责连接，多线程则为每一个接入开启一个线程。
+- 一个请求一个应答。
+- 请求之后应答之前客户端会一直等待（阻塞）。
+
+BIO通信方式在单线程服务器下一次只能处理一个请求，在处理完毕之前一直阻塞。因此不适用于高并发的情况。不过可以使用多线程稍微改进。
+
+
