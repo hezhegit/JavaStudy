@@ -1,14 +1,21 @@
 package arrays;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class SubsetXORSum1863 {
 
-    // 暴力
+
     public int subsetXORSum(int[] nums) {
+        int totalXOR = 0;
+        for (int num : nums) {
+            totalXOR |= num; // 逐位统计贡献
+        }
+        int n = nums.length;
+        return totalXOR * (1 << (n - 1)); // 每个数字对异或的总贡献
+    }
+    // 暴力
+    public int subsetXORSum2(int[] nums) {
         // 1. 求出子集
         List<List<Integer>> list = subsets(nums);
 //        List<List<Integer>> list = new ArrayList<>();
@@ -67,7 +74,10 @@ public class SubsetXORSum1863 {
     }
 
     public static void main(String[] args) {
+        int[] arr = new int[]{};
+
         SubsetXORSum1863 xorSum1863 = new SubsetXORSum1863();
         System.out.println(xorSum1863.subsetXORSum(new int[]{3,4,5,6,7,8}));
     }
+
 }
